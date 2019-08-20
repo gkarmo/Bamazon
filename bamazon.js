@@ -42,15 +42,39 @@ var connection = mysql.createConnection({
         }
         ])
         .then(function(answer) {
-            // based on their answer, either call the bid or the post functions
-            if (answer) {
-              postAuction();
+           
+            var chosenItem;
+            for (var i = 0; i < results.length; i++) {
+              if (results[i].product_name === answer.choice) {
+                chosenItem = results[i];
+              }
             }
-            else if(answer.postOrBid === "BID") {
-              bidAuction();
-            } else{
-              connection.end();
-            }
+
+            if (chosenItem.stock_quantity < parseInt(answer.quantity)) {
+
+                var new_quantity = anwser.qunatity - chosenItem.stock_quantity;
+                
+                connection.query(
+                  "UPDATE products SET ? WHERE ?",
+                  [
+                    {
+                      stock_quantity: new_quantity
+                    },
+                    {
+                      id: chosenItem.id
+                    }
+                  ],
+                  function(error) {
+                    if (error) throw err;
+                    console.log("Thanks for shopping at Bamazon!");
+                  }
+                );
+              }
+              else {
+                // bid wasn't high enough, so apologize and start over
+                console.log("Sorry we do not have that much in stock.");
+                shop();
+              }
           });
         });
     }
