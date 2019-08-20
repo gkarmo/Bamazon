@@ -45,12 +45,12 @@ var connection = mysql.createConnection({
            
             var chosenItem;
             for (var i = 0; i < results.length; i++) {
-              if (results[i].product_name === answer.choice) {
+              if (results[i].product_name === answer.inventory) {
                 chosenItem = results[i];
               }
             }
-
-            if (chosenItem.stock_quantity < parseInt(answer.quantity)) {
+                console.log(chosenItem)
+            if (chosenItem.stock_quantity > parseInt(answer.quantity)) {
 
                 var new_quantity = anwser.qunatity - chosenItem.stock_quantity;
                 
