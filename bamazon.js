@@ -11,6 +11,7 @@ var connection = mysql.createConnection({
 
   connection.connect(function(err) {
     if (err) throw err;
+    console.log("connected as id " + connection.threadId);
     // run the start function after the connection is made to prompt the user
     shop();
   });
@@ -23,16 +24,16 @@ var connection = mysql.createConnection({
     inquirer
       .prompt([
         {
-          name: "choice",
+          name: "inventory",
           type: "rawlist",
           choices: function() {
             var choiceArray = [];
             for (var i = 0; i < results.length; i++) {
-              choiceArray.push(results[i].item_name);
+              choiceArray.push(results[i].product_name);
             }
             return choiceArray;
           },
-          message: "What auction would you like to place a bid in?"
+          message: "What item would you like to purchase?"
         },
         {
             name: "quantity",
@@ -42,7 +43,7 @@ var connection = mysql.createConnection({
         ])
         .then(function(answer) {
             // based on their answer, either call the bid or the post functions
-            if (answer.postOrBid === "POST") {
+            if (answer) {
               postAuction();
             }
             else if(answer.postOrBid === "BID") {
