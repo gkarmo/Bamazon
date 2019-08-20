@@ -17,10 +17,10 @@ var connection = mysql.createConnection({
   });
 
   function shop() {
-  // query the database for all items being auctioned
+  // query the database for all items in inventory
   connection.query("SELECT * FROM products", function(err, results) {
     if (err) throw err;
-    // once you have the items, prompt the user for which they'd like to bid on
+    // once you have the items, prompt the user for which they'd like to purchase
     inquirer
       .prompt([
         {
@@ -71,9 +71,10 @@ var connection = mysql.createConnection({
                     console.log("Thanks for shopping at Bamazon!");
                   }
                 );
+                connection.end()
               }
               else {
-                // bid wasn't high enough, so apologize and start over
+                // quantity wasn't high enough, so apologize and start over
                 console.log("Sorry we do not have that much in stock.");
                 shop();
               }
