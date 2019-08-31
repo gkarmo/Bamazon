@@ -5,7 +5,7 @@ var connection = mysql.createConnection({
     host: "localhost",
     port: 3306,
     user: "root",
-    password: "deddeh13",
+    password: "",
     database: "bamazon"
   });
 
@@ -29,7 +29,7 @@ var connection = mysql.createConnection({
           choices: function() {
             var choiceArray = [];
             for (var i = 0; i < results.length; i++) {
-              choiceArray.push(results[i].product_name);
+              choiceArray.push(results[i].item_id);
             }
             return choiceArray;
           },
@@ -45,7 +45,7 @@ var connection = mysql.createConnection({
            
             var chosenItem;
             for (var i = 0; i < results.length; i++) {
-              if (results[i].product_name === answer.inventory) {
+              if (results[i].item_id === answer.inventory) {
                 chosenItem = results[i];
               }
             }
